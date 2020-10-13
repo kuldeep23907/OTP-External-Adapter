@@ -12,8 +12,11 @@ const customError = (data) => {
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  base: ['base', 'from', 'coin'],
-  quote: ['quote', 'to', 'market'],
+  member: ['address', 'from', 'member'],
+  amount: ['token', 'balance', 'amount'],
+  action: ['type', 'process', 'action'],
+  otp: ['password', 'fa', 'otp'],
+  to: ['phone', 'mobile', 'to'],
   endpoint: false
 }
 
@@ -22,23 +25,31 @@ const createRequest = (input, callback) => {
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
   const endpoint = validator.validated.data.endpoint || 'price'
-  const url = `https://min-api.cryptocompare.com/data/${endpoint}`
-  const fsym = validator.validated.data.base.toUpperCase()
-  const tsyms = validator.validated.data.quote.toUpperCase()
+  const url = `https://arcane-river-95748.herokuapp.com/`
+  const member = validator.validated.data.member.toUpperCase()
+  const amount = validator.validated.data.amount
+  const action = validator.validated.data.action.toUpperCase()
+  const otp = validator.validated.data.otp
+  const to = validator.validated.data.to
 
   const params = {
-    fsym,
-    tsyms
+    member,
+    amount,
+    action,
+    otp,
+    to
   }
 
   // This is where you would add method and headers
   // you can add method like GET or POST and add it to the config
   // The default is GET requests
-  // method = 'get' 
+  // method = 'get'
   // headers = 'headers.....'
   const config = {
+    method: 'post',
     url,
-    params
+    data: params,
+    timeout: 10000
   }
 
   // The Requester allows API calls be retry in case of timeout
@@ -48,7 +59,8 @@ const createRequest = (input, callback) => {
       // It's common practice to store the desired value at the top-level
       // result key. This allows different adapters to be compatible with
       // one another.
-      response.data.result = Requester.validateResultNumber(response.data, [tsyms])
+      console.log(response.data, "respons in adapter");
+      response.data.result = JSON.parse(Requester.validateResultNumber(response.data, ['msid']))
       callback(response.status, Requester.success(jobRunID, response))
     })
     .catch(error => {
@@ -87,3 +99,6 @@ exports.handlerv2 = (event, context, callback) => {
 // This allows the function to be exported for testing
 // or for running in express
 module.exports.createRequest = createRequest
+
+
+// https://discordapp.com/channels/592041321326182401/605768708266131456/765108418825945099

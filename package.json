@@ -9,7 +9,8 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "@chainlink/external-adapter": "^0.2.3"
+    "@chainlink/external-adapter": "^0.2.3",
+    "twilio": "^3.49.4"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",
