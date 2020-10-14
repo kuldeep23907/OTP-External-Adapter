@@ -13,6 +13,7 @@ otp: OTP to be sent
 action:  The action which is being performed with the tokens (eg. MINTED, BURNED)
 
 ## Output (returns true if OTP has been sent to the user)
+
 {
    "jobRunID":"0",
    "data":{
